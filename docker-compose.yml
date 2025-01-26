@@ -1,0 +1,31 @@
+version: "3.7"
+services:
+  pg:
+    container_name: "pg"
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_PASSWORD=postgres"
+    volumes:
+      - local-data:/pg/docker-entrypoint-initdb.d/
+
+  redis:
+    container_name: "redis"
+    image: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  adminer:
+    image: adminer:latest
+    restart: always
+    depends_on:
+      - pg
+    ports:
+      - 8080:8080
+
+volumes:
+  local-data:
