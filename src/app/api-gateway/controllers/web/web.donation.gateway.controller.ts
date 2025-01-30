@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
-import { AuthGuard } from "@src/app/guards";
+import { RoleGuard } from "@src/app/guards";
 import { CreateDonationDto, DonationReportDto, FilterDonationDTO, UpdateDonationDto } from "@src/app/modules/donation/dtos/donation.dto";
 import { DonationService } from "@src/app/modules/donation/services/donation.service";
 import { SuccessResponse } from "@src/app/types";
@@ -17,6 +17,7 @@ export class WebDonationGatewayController {
     ) { }
 
 
+    @UseGuards(RoleGuard)
     @Get()
     async getAll(
         @Query() query: FilterDonationDTO,
@@ -24,6 +25,7 @@ export class WebDonationGatewayController {
         return await this.service.getDonations(query);
     }
 
+    @UseGuards(RoleGuard)
     @Get('reports')
     async getReports(
         @Query() query: DonationReportDto,
@@ -32,6 +34,7 @@ export class WebDonationGatewayController {
         return new SuccessResponse("Donation report successfully", data);
     }
 
+    @UseGuards(RoleGuard)
     @Get(":id")
     async getOne(
         @Param('id') id: string,
@@ -50,6 +53,7 @@ export class WebDonationGatewayController {
         return new SuccessResponse("Donation successfully", createUser);
     }
 
+    @UseGuards(RoleGuard)
     @Patch(":id")
     async update(
         @Param('id') id: string,
@@ -60,6 +64,7 @@ export class WebDonationGatewayController {
         return new SuccessResponse("Donation successfully", createUser);
     }
 
+    @UseGuards(RoleGuard)
     @Delete(":id")
     async delete(
         @Param('id') id: string,
